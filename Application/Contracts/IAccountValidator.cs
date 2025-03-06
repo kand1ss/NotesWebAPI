@@ -5,7 +5,7 @@ namespace Application.Contracts;
 
 public interface IAccountValidator
 {
-    Task Validate(RegisterAccountDTO registerData);
-    Task ValidateLogin(string login);
-    Task ValidateEmail(string email);
+    Task ValidateAsync(RegisterAccountDTO registerData);
+    Task ValidateLoginAsync(string login);
+    Task ValidateEmailAsync(string email);
 }

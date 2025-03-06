@@ -10,6 +10,7 @@ public class Account
     public string? LastName { get; set; }
     public DateTime CreatedUtc { get; set; }
     public DateTime ModifiedUtc { get; set; }
-    
-    public List<Note> Notes { get; set; } = new List<Note>();
+
+    public HashSet<RefreshToken> RefreshTokens { get; set; } = new();
+    public HashSet<Note> Notes { get; set; } = new();
 }

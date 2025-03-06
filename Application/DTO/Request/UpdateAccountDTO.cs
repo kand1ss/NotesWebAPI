@@ -6,7 +6,7 @@ public record UpdateAccountDTO(
     [MinLength(4)]
     [MaxLength(20)]
     string? Login,
-    [RegularExpression("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$\n")]
+    [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$")]
     string? Email,
     [MinLength(5)]
     [MaxLength(32)]

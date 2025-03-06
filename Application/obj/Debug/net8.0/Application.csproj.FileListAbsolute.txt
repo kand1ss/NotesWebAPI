@@ -13,3 +13,4 @@ C:\Users\kand1s\Desktop\C# Projects\NoteAPI\Application\obj\Debug\net8.0\Applica
 C:\Users\kand1s\Desktop\C# Projects\NoteAPI\Application\obj\Debug\net8.0\refint\Application.dll
 C:\Users\kand1s\Desktop\C# Projects\NoteAPI\Application\obj\Debug\net8.0\Application.pdb
 C:\Users\kand1s\Desktop\C# Projects\NoteAPI\Application\obj\Debug\net8.0\ref\Application.dll
+C:\Users\kand1s\Desktop\C# Projects\NoteAPI\Application\obj\Debug\net8.0\Application.sourcelink.json

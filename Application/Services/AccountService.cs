@@ -2,27 +2,30 @@ using System.ComponentModel.DataAnnotations;
 using Application.Contracts;
 using Application.DTO;
 using Application.Exceptions;
+using Application.Extra;
 using Application.Factories;
 using Application.Mappers;
 using Core.Contracts;
 using Core.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace Application.Services;
 
 public class AccountService(IAccountValidator accountValidator, IAccountRepository accountRepository,
-    IPasswordService passwordService, IAccountUpdater accountUpdater) : IAccountService
+    IPasswordService passwordService, IAccountUpdater accountUpdater, JWTService jwtService,
+    ITokenRepository tokenRepository) : IAccountService
 {
-    private async Task<Account> TryGetAccountById(Guid id)
+    private async Task<Account> TryGetAccountByIdAsync(Guid id)
     {
-        var account = await accountRepository.GetById(id);
+        var account = await accountRepository.GetByIdAsync(id);
         if (account is null)
             throw new AccountNotFoundException(id);
         
         return account;
     }
-    private async Task<Account> TryGetAccountByLogin(string login)
+    private async Task<Account> TryGetAccountByLoginAsync(string login)
     {
-        var account = await accountRepository.GetByLogin(login);
+        var account = await accountRepository.GetByLoginAsync(login);
         if (account is null)
             throw new AccountNotFoundException(login);
 
@@ -30,66 +33,89 @@ public class AccountService(IAccountValidator accountValidator, IAccountReposito
     }
 
 
-    public async Task Register(RegisterAccountDTO registerData)
+    public async Task RegisterAsync(RegisterAccountDTO registerData)
     {
-        await accountValidator.Validate(registerData);
+        await accountValidator.ValidateAsync(registerData);
 
         var account = AccountFactory.Create(registerData);
         account.PasswordHash = passwordService.Generate(account, registerData.Password);
 
-        await accountRepository.Create(account);
+        await accountRepository.CreateAsync(account);
     }
 
-    public async Task Login(LoginAccountDTO loginData)
+    public async Task<TokensDTO> LoginAsync(LoginAccountDTO loginData, string ipAddress, string userAgent)
     {
         var login = loginData.Login;
-        await accountValidator.ValidateLogin(login);
+        await accountValidator.ValidateLoginAsync(login);
         
-        var account = await TryGetAccountByLogin(login);
+        var account = await TryGetAccountByLoginAsync(login);
         if (!passwordService.Verify(account, loginData.Password))
             throw new ValidationException($"Password doesn't match account \"{login}\"");
-
-        // TODO - JWT аутентификация
+        
+        return await UpdateTokensAsync(account, ipAddress, userAgent);
     }
 
-    public async Task Update(Guid id, UpdateAccountDTO updateData)
+    private async Task<TokensDTO> UpdateTokensAsync(Account account, string ipAddress, string userAgent)
     {
-        var account = await TryGetAccountById(id);
+        var tokens = jwtService.GenerateTokens(account, ipAddress, userAgent);
+        var refreshTokensById = await tokenRepository.GetByAccountIdAsync(account.Id);
+        var equalRefreshTokens = refreshTokensById
+            .Where(t => t.IpAddress == ipAddress && t.UserAgent == userAgent).ToList();
+
+        if (equalRefreshTokens.Any())
+            await tokenRepository.RemoveRangeAsync(equalRefreshTokens);
+
+        await tokenRepository.CreateAsync(tokens.RefreshToken);
+        return tokens;
+    }
+
+    public async Task<TokensDTO> RefreshLoginAsync(string refreshToken, string ipAddress, string userAgent)
+    {
+        var tokenInfo = await tokenRepository.GetByTokenAsync(refreshToken);
+        RefreshTokenValidator.Validate(tokenInfo, ipAddress, userAgent);
+        
+        var account = await TryGetAccountByIdAsync(tokenInfo.AccountId);
+        return await UpdateTokensAsync(account, ipAddress, userAgent);
+    }
+
+    public async Task UpdateAsync(Guid id, UpdateAccountDTO updateData)
+    {
+        var account = await TryGetAccountByIdAsync(id);
         accountUpdater.Update(account, updateData);
         
-        await accountRepository.Update(account);
+        await accountRepository.UpdateAsync(account);
     }
 
-    public async Task Delete(Guid id)
+    public async Task DeleteAsync(Guid id)
     {
-        var account = await TryGetAccountById(id);
-        await accountRepository.Delete(account);
+        var account = await TryGetAccountByIdAsync(id);
+        await accountRepository.DeleteAsync(account);
     }
 
-    public async Task<AccountDTO> GetAccountByLogin(string login)
+    public async Task<AccountDTO> GetAccountByLoginAsync(string login)
     {
-        var account = await TryGetAccountByLogin(login);
+        var account = await TryGetAccountByLoginAsync(login);
         return account.ToDTO();
     }
 
-    public async Task<AccountDTO> GetAccountByEmail(string email)
+    public async Task<AccountDTO> GetAccountByEmailAsync(string email)
     {
-        var account = await accountRepository.GetByEmail(email);
+        var account = await accountRepository.GetByEmailAsync(email);
         if (account is null)
             throw new AccountNotFoundException(email);
         
         return account.ToDTO();
     }
 
-    public async Task<AccountDTO> GetAccountById(Guid id)
+    public async Task<AccountDTO> GetAccountByIdAsync(Guid id)
     {
-        var account = await TryGetAccountById(id);
+        var account = await TryGetAccountByIdAsync(id);
         return account.ToDTO();
     }
 
-    public async Task<IEnumerable<AccountDTO>> GetAllAccounts()
+    public async Task<IEnumerable<AccountDTO>> GetAllAccountsAsync()
     {
-        var accounts = await accountRepository.GetAll();
+        var accounts = await accountRepository.GetAllAsync();
         return accounts.ToDTOs();
     }
 }

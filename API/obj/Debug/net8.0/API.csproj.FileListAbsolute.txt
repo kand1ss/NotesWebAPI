@@ -121,3 +121,12 @@ C:\Users\kand1s\Desktop\C# Projects\NoteAPI\API\obj\Debug\net8.0\API.genruntimec
 C:\Users\kand1s\Desktop\C# Projects\NoteAPI\API\obj\Debug\net8.0\ref\API.dll
 C:\Users\kand1s\Desktop\C# Projects\NoteAPI\API\bin\Debug\net8.0\Npgsql.dll
 C:\Users\kand1s\Desktop\C# Projects\NoteAPI\API\bin\Debug\net8.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+C:\Users\kand1s\Desktop\C# Projects\NoteAPI\API\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\kand1s\Desktop\C# Projects\NoteAPI\API\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\kand1s\Desktop\C# Projects\NoteAPI\API\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\kand1s\Desktop\C# Projects\NoteAPI\API\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\kand1s\Desktop\C# Projects\NoteAPI\API\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\kand1s\Desktop\C# Projects\NoteAPI\API\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\kand1s\Desktop\C# Projects\NoteAPI\API\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\kand1s\Desktop\C# Projects\NoteAPI\API\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\kand1s\Desktop\C# Projects\NoteAPI\API\obj\Debug\net8.0\API.sourcelink.json

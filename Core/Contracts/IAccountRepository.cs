@@ -4,15 +4,12 @@ namespace Core.Contracts;
 
 public interface IAccountRepository
 {
-    public Task Create(Account account);
-    public Task Update(Account account);
-    public Task Delete(Account account);
+    public Task CreateAsync(Account account);
+    public Task UpdateAsync(Account account);
+    public Task DeleteAsync(Account account);
     
-    public Task<Account?> GetByLogin(string login);
-    public Task<Account?> GetByEmail(string email);
-    public Task<Account?> GetById(Guid id);
-    public Task<IEnumerable<Account>> GetAll();
-    
-    public Task<bool> IsLoginTaken(string login);
-    public Task<bool> IsEmailTaken(string email);
+    public Task<Account?> GetByLoginAsync(string login);
+    public Task<Account?> GetByEmailAsync(string email);
+    public Task<Account?> GetByIdAsync(Guid id);
+    public Task<IEnumerable<Account>> GetAllAsync();
 }

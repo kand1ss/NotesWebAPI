@@ -4,13 +4,14 @@ namespace Application.Contracts;
 
 public interface IAccountService
 {
-    Task Register(RegisterAccountDTO registerData);
-    Task Login(LoginAccountDTO loginData);
-    Task Update(Guid id, UpdateAccountDTO account);
-    Task Delete(Guid id);
+    Task RegisterAsync(RegisterAccountDTO registerData);
+    Task<TokensDTO> LoginAsync(LoginAccountDTO loginData, string ipAddress, string userAgent);
+    Task<TokensDTO> RefreshLoginAsync(string refreshToken, string ipAddress, string userAgent);
+    Task UpdateAsync(Guid id, UpdateAccountDTO account);
+    Task DeleteAsync(Guid id);
 
-    Task<AccountDTO> GetAccountByLogin(string login);
-    Task<AccountDTO> GetAccountByEmail(string email);
-    Task<AccountDTO> GetAccountById(Guid id);
-    Task<IEnumerable<AccountDTO>> GetAllAccounts();
+    Task<AccountDTO> GetAccountByLoginAsync(string login);
+    Task<AccountDTO> GetAccountByEmailAsync(string email);
+    Task<AccountDTO> GetAccountByIdAsync(Guid id);
+    Task<IEnumerable<AccountDTO>> GetAllAccountsAsync();
 }

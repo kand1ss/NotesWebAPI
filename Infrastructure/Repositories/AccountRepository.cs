@@ -7,40 +7,33 @@ namespace Infrastructure.Repositories;
 
 public class AccountRepository(DataContext context) : IAccountRepository
 {
-    public async Task Create(Account account)
+    public async Task CreateAsync(Account account)
     {
         await context.Accounts.AddAsync(account);
         await context.SaveChangesAsync();
     }
 
-    public async Task Update(Account account)
+    public async Task UpdateAsync(Account account)
     {
         context.Accounts.Update(account);
         await context.SaveChangesAsync();
     }
 
-    public async Task Delete(Account account)
+    public async Task DeleteAsync(Account account)
     {
         context.Accounts.Remove(account);
         await context.SaveChangesAsync();
     }
 
-    public async Task<Account?> GetByLogin(string login)
+    public async Task<Account?> GetByLoginAsync(string login)
         => await context.Accounts.FirstOrDefaultAsync(x => x.Login == login);
 
-    public async Task<Account?> GetByEmail(string email)
+    public async Task<Account?> GetByEmailAsync(string email)
         => await context.Accounts.FirstOrDefaultAsync(x => x.Email == email);
 
-    public async Task<Account?> GetById(Guid id)
+    public async Task<Account?> GetByIdAsync(Guid id)
         => await context.Accounts.FirstOrDefaultAsync(x => x.Id == id);
 
-    public async Task<IEnumerable<Account>> GetAll()
+    public async Task<IEnumerable<Account>> GetAllAsync()
         => await context.Accounts.ToListAsync();
-
-    
-    public async Task<bool> IsLoginTaken(string login)
-        => await context.Accounts.AnyAsync(x => x.Login == login);
-
-    public async Task<bool> IsEmailTaken(string email)
-        => await context.Accounts.AnyAsync(x => x.Email == email);
 }

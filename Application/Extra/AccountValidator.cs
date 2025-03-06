@@ -7,27 +7,27 @@ namespace Application.Extra;
 
 public class AccountValidator(IAccountRepository repository) : IAccountValidator
 {
-    public async Task Validate(RegisterAccountDTO registerData)
+    public async Task ValidateAsync(RegisterAccountDTO registerData)
     {
-        var accountByLogin = await repository.GetByLogin(registerData.Login);
+        var accountByLogin = await repository.GetByLoginAsync(registerData.Login);
         if(accountByLogin is not null)
             throw new ValidationException($"Account with login \"{registerData.Login}\" already exists.");
         
-        var accountByEmail = await repository.GetByEmail(registerData.Email);
+        var accountByEmail = await repository.GetByEmailAsync(registerData.Email);
         if(accountByEmail is not null)
             throw new ValidationException($"Account with email \"{registerData.Email}\" already exists.");
     }
 
-    public async Task ValidateLogin(string login)
+    public async Task ValidateLoginAsync(string login)
     {
-        var account = await repository.GetByLogin(login);
+        var account = await repository.GetByLoginAsync(login);
         if(account is null)
             throw new ValidationException($"Account with login \"{login}\" does not exist.");
     }
 
-    public async Task ValidateEmail(string email)
+    public async Task ValidateEmailAsync(string email)
     {
-        var account = await repository.GetByEmail(email);
+        var account = await repository.GetByEmailAsync(email);
         if(account is null)
             throw new ValidationException($"Account with email \"{email}\" does not exist.");
     }

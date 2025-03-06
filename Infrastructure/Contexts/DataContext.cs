@@ -8,10 +8,13 @@ public class DataContext(DbContextOptions options) : DbContext(options)
 {
     public DbSet<Account> Accounts { get; set; }
     public DbSet<Note> Notes { get; set; }
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
+    
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new AccountConfiguration());
         modelBuilder.ApplyConfiguration(new NoteConfiguration());
+        modelBuilder.ApplyConfiguration(new RefreshTokenConfiguration());
     }
 }

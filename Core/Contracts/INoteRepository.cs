@@ -4,12 +4,12 @@ namespace Core.Contracts;
 
 public interface INoteRepository
 {
-    public Task Create(Note note);
-    public Task Update(Note note);
-    public Task Delete(Note note);
+    public Task CreateAsync(Note note);
+    public Task UpdateAsync(Note note);
+    public Task DeleteAsync(Note note);
     
-    public Task<Note?> GetById(int id);
-    public Task<IEnumerable<Note>> GetByUserGuid(Guid userGuid);
+    public Task<Note?> GetByIdAsync(int id);
+    public Task<IEnumerable<Note>> GetByUserGuidAsync(Guid userGuid);
     
-    public Task<IEnumerable<Note>> GetAll();
+    public Task<IEnumerable<Note>> GetAllAsync();
 }
