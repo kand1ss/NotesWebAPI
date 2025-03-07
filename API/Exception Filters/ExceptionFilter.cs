@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace API.Exception_Filters;
 
-public class AuthExceptionFilter(ILogger<AuthExceptionFilter> logger) : ExceptionFilterAttribute
+public class ExceptionFilter(ILogger<ExceptionFilter> logger) : ExceptionFilterAttribute
 {
     public override void OnException(ExceptionContext context)
     {
@@ -16,6 +16,8 @@ public class AuthExceptionFilter(ILogger<AuthExceptionFilter> logger) : Exceptio
             context.Result = new NotFoundObjectResult(accountNotFound.Message);
         else if (exception is ValidationException validationException)
             context.Result = new BadRequestObjectResult(validationException.Message);
+        else if (exception is NoteNotFoundException noteNotFound)
+            context.Result = new NotFoundObjectResult(noteNotFound.Message);
         else
             context.Result = new ObjectResult(new
             {

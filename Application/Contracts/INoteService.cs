@@ -4,11 +4,11 @@ namespace Application.Contracts;
 
 public interface INoteService
 {
-    Task CreateAsync(NoteDTO note);
-    Task UpdateAsync(NoteDTO note);
-    Task DeleteAsync(int id);
+    Task CreateAsync(Guid userId, CreateNoteDTO noteData);
+    Task UpdateAsync(Guid userId, int id, UpdateNoteDTO note);
+    Task DeleteAsync(Guid userId, int id);
     
-    Task<NoteDTO> GetNoteByIdAsync(int id);
+    Task<NoteDTO> GetNoteByIdAsync(Guid userId, int id);
     Task<IEnumerable<NoteDTO>> GetNotesByUserIdAsync(Guid id);
     Task<IEnumerable<NoteDTO>> GetAllNotesAsync();
 }

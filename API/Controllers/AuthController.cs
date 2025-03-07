@@ -36,7 +36,7 @@ public class AuthController(IAccountService accountService, CookiesManager cooki
     public async Task<IActionResult> RegisterAccountAsync([FromBody] RegisterAccountDTO registerData)
     {
         await accountService.RegisterAsync(registerData);
-        return Ok();
+        return Created();
     }
 
     [HttpPost("login")]

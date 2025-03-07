@@ -66,6 +66,7 @@ public static class ServicesExtensions
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<IAccountService, AccountService>();
+        services.AddScoped<INoteService, NoteService>();
         
         return services;
     }

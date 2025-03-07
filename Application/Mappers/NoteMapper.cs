@@ -3,11 +3,11 @@ using Core.Models;
 
 namespace Application.Mappers;
 
-public class NoteMapper
+public static class NoteMapper
 {
-    public static NoteDTO ToDTO(Note note)
+    public static NoteDTO ToDTO(this Note note)
         => new(note.Text, note.Deadline);
     
-    public static IEnumerable<NoteDTO> ToDTOs(IEnumerable<Note> notes)
+    public static IEnumerable<NoteDTO> ToDTOs(this IEnumerable<Note> notes)
         => notes.Select(ToDTO);
 }
