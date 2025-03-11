@@ -1,3 +1,4 @@
+
 namespace Application.Exceptions;
 
 public class AccountNotFoundException : Exception

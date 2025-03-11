@@ -13,7 +13,7 @@ namespace Application.Services;
 
 public class AccountService(IAccountValidator accountValidator, IAccountRepository accountRepository,
     IPasswordService passwordService, IAccountUpdater accountUpdater, JWTService jwtService,
-    ITokenRepository tokenRepository) : IAccountService
+    ITokenRepository tokenRepository, IAccountPermissionsRepository permissionsRepository) : IAccountService
 {
     private async Task<Account> TryGetAccountByIdAsync(Guid id)
     {
@@ -39,8 +39,12 @@ public class AccountService(IAccountValidator accountValidator, IAccountReposito
 
         var account = AccountFactory.Create(registerData);
         account.PasswordHash = passwordService.Generate(account, registerData.Password);
+        
+        var defaultPermissions = await permissionsRepository.GetDefaultPermissions();
+        var accountPermissions = AccountPermissionsFactory.Create(account, defaultPermissions);
 
         await accountRepository.CreateAsync(account);
+        await permissionsRepository.AddPermissions(accountPermissions);
     }
 
     public async Task<TokensDTO> LoginAsync(LoginAccountDTO loginData, string ipAddress, string userAgent)

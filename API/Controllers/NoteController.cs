@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Application.Authorization;
 using Application.Contracts;
 using Application.DTO;
 using Microsoft.AspNetCore.Authorization;
@@ -19,7 +20,7 @@ public class NoteController(INoteService noteService) : ControllerBase
     }
     
     [HttpPost]
-    [Authorize]
+    [Authorize(Permissions.Create)]
     public async Task<IActionResult> CreateNoteAsync([FromBody] CreateNoteDTO noteData)
     {
         var userGuid = GetUserGuid();
@@ -28,7 +29,7 @@ public class NoteController(INoteService noteService) : ControllerBase
     }
 
     [HttpPut("{id:int}")]
-    [Authorize]
+    [Authorize(Permissions.Update)]
     public async Task<IActionResult> UpdateNoteAsync(int id, [FromBody] UpdateNoteDTO noteData)
     {
         var userGuid = GetUserGuid();
@@ -37,7 +38,7 @@ public class NoteController(INoteService noteService) : ControllerBase
     }
 
     [HttpDelete("{id:int}")]
-    [Authorize]
+    [Authorize(Permissions.Delete)]
     public async Task<IActionResult> DeleteNoteAsync(int id)
     {
         var userGuid = GetUserGuid();

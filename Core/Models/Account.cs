@@ -11,6 +11,7 @@ public class Account
     public DateTime CreatedUtc { get; set; }
     public DateTime ModifiedUtc { get; set; }
 
-    public HashSet<RefreshToken> RefreshTokens { get; set; } = new();
-    public HashSet<Note> Notes { get; set; } = new();
+    public ICollection<RefreshToken> RefreshTokens { get; set; }
+    public ICollection<AccountPermission> Permissions { get; set; }
+    public ICollection<Note> Notes { get; set; }
 }

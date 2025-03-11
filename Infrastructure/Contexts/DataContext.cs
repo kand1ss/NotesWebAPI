@@ -9,6 +9,8 @@ public class DataContext(DbContextOptions options) : DbContext(options)
     public DbSet<Account> Accounts { get; set; }
     public DbSet<Note> Notes { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
+    public DbSet<AccountPermission> AccountPermissions { get; set; }
+    public DbSet<Permission> Permissions { get; set; }
     
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -16,5 +18,7 @@ public class DataContext(DbContextOptions options) : DbContext(options)
         modelBuilder.ApplyConfiguration(new AccountConfiguration());
         modelBuilder.ApplyConfiguration(new NoteConfiguration());
         modelBuilder.ApplyConfiguration(new RefreshTokenConfiguration());
+        modelBuilder.ApplyConfiguration(new AccountPermissionConfiguration());
+        modelBuilder.ApplyConfiguration(new PermissionConfiguration());
     }
 }

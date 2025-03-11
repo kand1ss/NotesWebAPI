@@ -1,9 +1,11 @@
 using System.Text;
+using Application.Authorization;
 using Application.Contracts;
 using Application.Extra;
 using Application.Services;
 using Core.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,6 +35,22 @@ public static class ServicesExtensions
 
         ConfigureAuthentication(services, authSettings);
 
+        return services;
+    }
+
+    public static IServiceCollection AddAuthorizationPolicies(this IServiceCollection services)
+    {
+        services.AddScoped<IAuthorizationHandler, PermissionRequirementsHandler>();
+        services.AddAuthorization(opt =>
+        {
+            opt.AddPolicy(Permissions.Create, policy =>
+                policy.AddRequirements(new PermissionRequirements(Permissions.Create)));
+            opt.AddPolicy(Permissions.Update, policy =>
+                policy.AddRequirements(new PermissionRequirements(Permissions.Update)));
+            opt.AddPolicy(Permissions.Delete, policy =>
+                policy.AddRequirements(new PermissionRequirements(Permissions.Delete)));
+        });
+        
         return services;
     }
 

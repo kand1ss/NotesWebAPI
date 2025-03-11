@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddExtraServices();
 builder.Services.AddJWTAuthentication(builder.Configuration);
+builder.Services.AddAuthorizationPolicies();
 builder.Services.AddServices();
 builder.Services.AddAPIManagers();
 builder.Services.AddFilteredControllers();

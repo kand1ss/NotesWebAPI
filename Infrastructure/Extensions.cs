@@ -18,6 +18,7 @@ public static class Extensions
         services.AddScoped<IAccountRepository, AccountRepository>();
         services.AddScoped<INoteRepository, NoteRepository>();
         services.AddScoped<ITokenRepository, RefreshTokenRepository>();
+        services.AddScoped<IAccountPermissionsRepository, AccountPermissionsRepository>();
         
         return services;
     }
